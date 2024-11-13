@@ -1,5 +1,5 @@
 import socket
-import os
+import sys
 
 HOST = "127.0.0.1"  # The server's hostname or IP address
 PORT = 3201  # The port used by the server
@@ -9,55 +9,49 @@ def end(s):
     s.close()
 
 def send_data(s, msg):
-    s.sendto(str.encode(msg), (HOST, PORT))
-    print(f"sent message len = {len(msg)}")
+    try:
+        s.sendto(str.encode(msg), (HOST, PORT))
+        print(f"sent message len = {len(msg)}")
+    except WindowsError as e:
+        return -2, len(msg)
     response = ""
     while not response:
         try:
             response, server_addr = s.recvfrom(1024)
-            # print("server confirmation : {data}")
             print(f"Server response: {response!r}")
             if int(response) != len(msg):
                 print("verification error")
-                return -2
-                # end(s)
+                end(s)
+            return 0, int(response)
         except socket.timeout:
             print("socket timeout")
-            return -1
-        except WindowsError as e:
-            print("no kurwa")
-            print(e)
-            return -2
+            end(s)
+
+
 
 def setup():
-    # with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.settimeout(10)
     s.connect((HOST, PORT))
     print("created socket")
-    # s.connect((HOST, PORT))
     x = 2
     x_o = -1
-    # while abs(x - x_o) > 1:
-    # if verificarion good x = x + (x_max - x)/2
-    # else x = x - (x_max - x)/2
-    # for msg in messages:
+    a = 2
+    r = 0
     while abs(x -x_o)>1:
         msg = "A"*x
-        res = send_data(s, msg)
-        if res == -1:
-            end(s)
-        elif res == -2:
-            x = x - (x- x_o)/2
-        else:
-            x_o = x
-            x = x*2
+        res, r = send_data(s, msg)
+        if(x==r):
+            if res == -2:
+                x = int(x - (x- x_o)/2)
+                continue
+            else:
+                x_o = x
+                x = int(x*a)
 
     end(s)
 
+def main(arguments):
+    setup()
 
-# send_data()
-setup()
-# if main
-# get args - ip, port
-# send_data
+if __name__ == "__main__":
+    main(sys.argv)
