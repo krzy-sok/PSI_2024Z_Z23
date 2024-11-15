@@ -37,8 +37,11 @@ def setup():
     x_o = -1
     a = 2
     r = 0
+    s.settimeout(10)
     while abs(x -x_o)>1:
         msg = "A"*x
+        if x >=3:
+            msg = "z32" + "A"*(x-3)
         res, r = send_data(s, msg)
         if(x==r):
             if res == -2:
