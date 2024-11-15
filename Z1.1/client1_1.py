@@ -1,12 +1,12 @@
 import socket
 import sys
+import argparse
 
-HOST = "127.0.0.1"  # The server's hostname or IP address
-PORT = 3201  # The port used by the server
 
 def end(s):
     print("end of work")
     s.close()
+
 
 def send_data(s, msg):
     try:
@@ -26,7 +26,6 @@ def send_data(s, msg):
         except socket.timeout:
             print("socket timeout")
             end(s)
-
 
 
 def setup():
@@ -50,11 +49,26 @@ def setup():
             else:
                 x_o = x
                 x = int(x*a)
-
     end(s)
 
+
 def main(arguments):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--IP", type=str)
+    parser.add_argument("--PORT", type=int)
+    args = parser.parse_args(arguments[1:])
+    global HOST
+    global PORT
+    if not args.IP:
+        HOST = "127.0.0.1"
+    else:
+        HOST = args.IP
+    if not args.PORT:
+        PORT = 3201
+    else:
+        PORT = args.PORT
     setup()
+
 
 if __name__ == "__main__":
     main(sys.argv)

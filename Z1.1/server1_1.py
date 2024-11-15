@@ -1,14 +1,12 @@
 import socket
-import time
+import argparse
 import sys
-
-HOST = "127.0.0.1"
-PORT = 3201
 
 
 def end(s):
     print("end of work")
     s.close()
+
 
 def recv_data():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -40,9 +38,24 @@ def recv_data():
         data_o = data
     end(s)
 
-recv_data()
+
+def main(arguments):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--IP", type=str)
+    parser.add_argument("--PORT", type=int)
+    args = parser.parse_args(arguments[1:])
+    global HOST
+    global PORT
+    if not args.IP:
+        HOST = "127.0.0.1"
+    else:
+        HOST = args.IP
+    if not args.PORT:
+        PORT = 3201
+    else:
+        PORT = args.PORT
+    recv_data()
 
 
-# if main
-# gest args - ip port
-# recive_data
+if __name__ == "__main__":
+    main(sys.argv)
