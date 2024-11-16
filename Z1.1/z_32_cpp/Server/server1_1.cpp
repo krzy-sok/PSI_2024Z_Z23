@@ -44,16 +44,19 @@ int main() {
 
   len = sizeof(cliaddr); // len is value/result
 
-  while (1) {
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL,
+  std::chrono::time_point start = std::chrono::steady_clock::now();
+  while (std::chrono::steady_clock::now() - start < std::chrono::seconds(10)) {
+    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_DONTWAIT,
                  (struct sockaddr *)&cliaddr, &len);
-    buffer[n] = '\0';
-    printf("Received  %d bytes\n", n);
-    printf("Sender: %c%c%c \n", buffer[0], buffer[1], buffer[2]);
+    if (n != -1) {
+      buffer[n] = '\0';
+      printf("Received  %d bytes\n", n);
+      printf("Sender: %c%c%c \n", buffer[0], buffer[1], buffer[2]);
 
-    sendto(sockfd, (const char *)hello, strlen(hello), MSG_CONFIRM,
-           (const struct sockaddr *)&cliaddr, len);
-    std::cout << hello << std::endl;
+      sendto(sockfd, (const char *)hello, strlen(hello), MSG_CONFIRM,
+             (const struct sockaddr *)&cliaddr, len);
+      std::cout << hello << std::endl;
+    }
   }
   return 0;
 }

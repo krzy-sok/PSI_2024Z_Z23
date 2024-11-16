@@ -1,6 +1,7 @@
 // Client side implementation of UDP client-server model
 #include <arpa/inet.h>
 #include <bits/stdc++.h>
+#include <chrono>
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,7 +47,8 @@ int main() {
   socklen_t len;
   int length = 1;
 
-  while (1) {
+  std::chrono::time_point start = std::chrono::steady_clock::now();
+  while (std::chrono::steady_clock::now() - start < std::chrono::seconds(10)) {
     char *msg = msg_generator(length);
 
     sendto(sockfd, msg, strlen(msg), MSG_CONFIRM,
@@ -54,10 +56,17 @@ int main() {
     std::cout << "Message sent with length: " << length << std::endl;
 
     length += 100;
-    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL,
-                 (struct sockaddr *)&servaddr, &len);
-    buffer[n] = '\0';
-    std::cout << "Server received message:" << buffer << std::endl;
+
+    while (std::chrono::steady_clock::now() - start <
+           std::chrono::seconds(10)) {
+      n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_DONTWAIT,
+                   (struct sockaddr *)&servaddr, &len);
+      if (n != -1) {
+        buffer[n] = '\0';
+        std::cout << "Server received message:" << buffer << std::endl;
+        break;
+      }
+    }
   }
 
   close(sockfd);
