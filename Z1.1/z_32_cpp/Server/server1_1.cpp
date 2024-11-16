@@ -45,7 +45,7 @@ int main() {
 
   len = sizeof(cliaddr); // len is value/result
 
-  std::chrono::time_point start = std::chrono::steady_clock::now();
+  auto start = std::chrono::steady_clock::now();
   while (std::chrono::steady_clock::now() - start < std::chrono::seconds(10)) {
     n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_DONTWAIT,
                  (struct sockaddr *)&cliaddr, &len);

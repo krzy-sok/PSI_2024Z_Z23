@@ -48,7 +48,7 @@ int main() {
   socklen_t len;
   int length = 1;
 
-  std::chrono::time_point start = std::chrono::steady_clock::now();
+  auto start = std::chrono::steady_clock::now();
   while (std::chrono::steady_clock::now() - start < std::chrono::seconds(10)) {
     char *msg = msg_generator(length);
 
