@@ -1,5 +1,0 @@
-FROM gcc:4.9
-COPY . /Sockets
-WORKDIR /Sockets/
-RUN g++ -o z_32_client client1_1.cpp
-ENTRYPOINT ["./z_32_client"]
