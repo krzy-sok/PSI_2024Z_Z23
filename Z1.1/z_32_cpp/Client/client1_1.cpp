@@ -11,6 +11,7 @@
 
 #define PORT 8080
 #define MAXLINE 66000
+#define NETWORK_IP "172.21.32.0/24"
 
 char *msg_generator(int lenght) {
   char *message = new char[66000];
@@ -41,7 +42,7 @@ int main() {
   // Filling server information
   servaddr.sin_family = AF_INET;
   servaddr.sin_port = htons(PORT);
-  servaddr.sin_addr.s_addr = INADDR_ANY;
+  servaddr.sin_addr.s_addr = inet_addr(NETWORK_IP);
 
   int n;
   socklen_t len;
