@@ -1,0 +1,5 @@
+FROM gcc:4.9
+COPY . /Server
+WORKDIR /Server/
+RUN g++ -o z_32_server server1_1.cpp 
+CMD ["./z_32_server"]
