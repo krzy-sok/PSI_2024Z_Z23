@@ -18,5 +18,10 @@ docker rm z32_server_py
 
 echo c++ to c++ demonstration, results in server_cpp.txt and client_cpp.txt
 
+server_id="$(docker run -it --rm --network-alias z32_server --ip '172.21.32.2' --network z32_network --name z32_server z32_server)"
+client_id="$(docker run -it --network-alias z32_client --ip '172.21.32.3' --network z32_network --name z32_client z32_client)"
+
+docker logs --since=1h ${server_id} > ./z32_results/server_cpp.txt
+docker logs --since=1h ${client_id} > ./z32_results/client.cpp.txt
 
 # echo c++ to python and vice versa, results in cross_server_cpp, cross_client_py etc...
