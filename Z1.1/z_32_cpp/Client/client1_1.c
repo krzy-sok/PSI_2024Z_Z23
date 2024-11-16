@@ -1,4 +1,4 @@
-//docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "8080": executable file not found in $PATH: unknown.
+//docker run -it --network-alias z32_client --ip '172.21.32.3' --network z32_network --name z32_client z32_client
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <stdio.h>
