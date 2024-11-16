@@ -12,7 +12,7 @@ def send_data(s, msg):
     try:
         s.sendto(str.encode(msg), (HOST, PORT))
         print(f"sent message len = {len(msg)}")
-    except WindowsError as e:
+    except OSError as e:
         return -2, len(msg)
     response = ""
     while not response:
