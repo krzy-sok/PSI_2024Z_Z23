@@ -13,14 +13,10 @@ Głównym celem jest umożliwienie komunikacji między tymi programami oraz spra
 Wszystkie wyniki testów są zapisywane w katalogu `z32_results`.
 
 ### Struktura Katalogu `z32_results`
-- **`server_c.txt`**: logi serwera uruchomionego w C.
-- **`client_c.txt`**: logi klienta uruchomionego w C.
-- **`server_py.txt`**: logi serwera uruchomionego w Pythonie.
-- **`client_py.txt`**: logi klienta uruchomionego w Pythonie.
-- **`cross_server_c.txt`**: logi serwera w C podczas testu z klientem w Pythonie.
-- **`cross_client_py.txt`**: logi klienta w Pythonie podczas testu z serwerem w C.
-- **`cross_server_py.txt`**: logi serwera w Pythonie podczas testu z klientem w C.
-- **`cross_client_c.txt`**: logi klienta w C podczas testu z serwerem w Pythonie.
+- **`server_c.txt` / `client_c.txt`**: logi z testu, gdy serwer i klient są napisane w C.
+- **`server_py.txt` / `client_py.txt`**: logi z testu, gdy serwer i klient są napisane w Pythonie.
+- **`cross_server_c.txt` / `cross_client_py.txt`**: logi z testu, gdy serwer jest napisany w C, a klient w Pythonie.
+- **`cross_server_py.txt` / `cross_client_c.txt`**: logi z testu, gdy serwer jest napisany w Pythonie, a klient w C.
 
 ## Tworzenie Katalogu i Zapisywanie Wyników
 Podczas uruchamiania skryptu `run.sh`:
