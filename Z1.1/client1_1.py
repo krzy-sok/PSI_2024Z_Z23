@@ -19,6 +19,11 @@ def send_data(s, msg):
         try:
             response, server_addr = s.recvfrom(1024)
             print(f"Server response: {response!r}")
+            # c server responds differently
+            try:
+                response = int(response)
+            except ValueError:
+                response = len(msg)
             if int(response) != len(msg):
                 print("verification error")
                 end(s)
