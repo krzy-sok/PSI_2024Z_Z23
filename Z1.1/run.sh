@@ -25,7 +25,7 @@ client_id="$(docker run -it -d --network z32_network --hostname z32_client_py --
 docker logs --since=1h ${server_id} > ./z32_results/server_py.txt
 docker logs --since=1h ${client_id} > ./z32_results/client_py.txt
 
-sleep 10
+sleep 15
 
 docker rm z32_client_py
 docker rm z32_server_py
@@ -42,7 +42,7 @@ client_id="$(docker run -it -d --network z32_network --hostname z32_client_py --
 docker logs --since=1h ${server_id} > ./z32_results/cross_server_c.txt
 docker logs --since=1h ${client_id} > ./z32_results/cross_client_py.txt
 
-sleep 10
+sleep 15
 
 docker rm z32_client_py
 docker rm z32_server
@@ -53,7 +53,7 @@ client_id="$(docker run -it -d --network-alias z32_client --ip '172.21.32.3' --n
 docker logs --since=1h ${server_id} > ./z32_results/cross_server_py.txt
 docker logs --since=1h ${client_id} > ./z32_results/cross_client_c.txt
 
-sleep 10
+sleep 15
 
 docker rm z32_server_py
 docker rm z32_client
