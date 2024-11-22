@@ -41,7 +41,7 @@ def setup():
 
     # Fixed-length message
     msg_size = 512
-    payload = "A" * (msg_size - 3)  # Fill the rest of the datagram
+    payload = "A" * (msg_size - 3)  
     msg = "z32" + payload
 
     while True:
@@ -49,8 +49,7 @@ def setup():
         if res == -2:
             print("failed to send message, retrying...")
             continue
-
-    end(s)
+    
 
 
 def main(arguments):

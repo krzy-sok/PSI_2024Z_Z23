@@ -30,14 +30,12 @@ def recv_data():
                 print(f"unexpected packet size: {size_rec} bytes (expected {expected_size})")
                 continue
 
-            # Verify prefix
             if data[:3] != b"z32":
                 print("error: missing or incorrect prefix")
                 continue
 
             print(f"received {size_rec} bytes from {ret_addr}")
 
-            # Send acknowledgment
             s.sendto(str.encode(f"{size_rec}"), ret_addr)
 
     except Exception as e:
