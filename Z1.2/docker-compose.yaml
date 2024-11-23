@@ -23,6 +23,7 @@ services:
     depends_on:
       - server
 
+
 networks:
   network1:
     name: z32_network

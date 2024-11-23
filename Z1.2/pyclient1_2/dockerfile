@@ -1,3 +1,5 @@
 FROM python:3
 ADD client1_2.py /
+RUN apt-get update
+RUN apt-get install iproute2 -y
 ENTRYPOINT ["python", "./client1_2.py", "--IP", "z32_server1_2"]

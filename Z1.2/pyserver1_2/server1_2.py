@@ -11,7 +11,7 @@ def end(s):
 
 def recv_data():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.settimeout(10)
+    s.settimeout(12)
     s.bind((HOST, PORT))
 
     expected_size = 512  # Fixed packet size

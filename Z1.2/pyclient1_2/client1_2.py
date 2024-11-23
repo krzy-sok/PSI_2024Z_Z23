@@ -1,7 +1,7 @@
 import socket
 import sys
 import argparse
-
+import time
 
 def end(s):
     s.close()
@@ -11,10 +11,10 @@ def end(s):
 
 
 def send_data(s, msg, n):
-    s.sendto(msg.encode(), (HOST, PORT))
-    print(f"sent message of length = {len(msg)}")
+    s.sendto(msg.encode(msg), (HOST, PORT))
+    print(f"sent message number {n}")
     response = ""
-    print("waiting")
+    # print("waiting")
     while not response:
         try:
             response, server_addr = s.recvfrom(1024)
@@ -44,17 +44,17 @@ def setup():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect((HOST, PORT))
     print("created socket")
-    s.settimeout(10)
+    s.settimeout(2)
 
     # Fixed-length message
     msg_size = 512
     payload = "A" * (msg_size - 10)
-
+    time.sleep(2)
 
     # send 20 packets
     n = 1
     timeout= 0
-    while n <= 20:
+    while n <= 12:
         if timeout > 10:
             print("server not responding, aborting")
             end(s)
