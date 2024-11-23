@@ -11,7 +11,7 @@ def end(s):
 
 
 def send_data(s, msg, n):
-    s.sendto(msg.encode(msg), (HOST, PORT))
+    s.sendto(msg.encode(), (HOST, PORT))
     print(f"sent message number {n}")
     response = ""
     # print("waiting")
