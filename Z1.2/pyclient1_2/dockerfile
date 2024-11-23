@@ -1,3 +1,3 @@
 FROM python:3
 ADD client1_2.py /
-ENTRYPOINT ["python", "./client1_2.py"]
+ENTRYPOINT ["python", "./client1_2.py", "--IP", "z32_server1_2"]
