@@ -49,7 +49,7 @@ def setup():
     # Fixed-length message
     msg_size = 512
     payload = "A" * (msg_size - 10)
-    time.sleep(2)
+    time.sleep(4)
 
     # send 20 packets
     n = 1

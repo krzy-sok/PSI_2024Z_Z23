@@ -10,6 +10,7 @@ def end(s):
 
 
 def recv_data():
+    time.sleep(4)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.settimeout(12)
     s.bind((HOST, PORT))
