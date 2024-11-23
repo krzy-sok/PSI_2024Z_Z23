@@ -37,10 +37,15 @@ def recv_data():
             if data[:6] != b"packet":
                 print("error: missing or incorrect prefix")
                 continue
-            if int(data[6:9]) <= last_packet:
+            cur_packet = int(data[6:9])
+            if cur_packet <= last_packet:
                 print("incorrect packet number")
                 continue
-            print("packet verified")
+            if cur_packet > last_packet+1:
+                print(f"packet {last_packet+1} lost!")
+                s.sendto(str.encode(f"MIS{last_packet+1}"), ret_addr)
+                continue
+            print(f"packet {data[0:9]} verified")
             last_packet = int(data[6:9])
             print(f"received {size_rec} bytes from {ret_addr}")
             s.sendto(str.encode(f"ACK{last_packet}"), ret_addr)

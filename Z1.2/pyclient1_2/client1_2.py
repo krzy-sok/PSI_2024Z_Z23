@@ -28,7 +28,10 @@ def send_data(s, msg, n):
             except ValueError:
                 print("incorrect response format : packet number")
                 end(s)
-            if(response[:3] != b"ACK"):
+            if(response[:3] == b"MIS"):
+                print(f"packet {packet_num} have not arrived!")
+                return -3
+            elif(response[:3] != b"ACK"):
                 print("incorrect response format : ACK")
                 end(s)
         except socket.timeout:
@@ -63,6 +66,10 @@ def setup():
         if res == -2:
             print("did not receive confirmation, retrying...")
             timeout += 1
+            continue
+        if res == -3:
+            print("re-sending missing packet")
+            n -= 1
             continue
         timeout = 0
         n+=1
