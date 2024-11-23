@@ -1,6 +1,7 @@
 import socket
 import argparse
 import sys
+import time
 
 
 def end(s):
@@ -15,9 +16,12 @@ def recv_data():
 
     expected_size = 512  # Fixed packet size
     print(f"server listening on {HOST}:{PORT}")
-
+    last_packet = 0
     try:
         while True:
+            # for testing unexpected connection break
+            # if last_packet > 2:
+            #     time.sleep(120)
             try:
                 data, ret_addr = s.recvfrom(expected_size + 33)
             except socket.timeout:
@@ -30,13 +34,16 @@ def recv_data():
                 print(f"unexpected packet size: {size_rec} bytes (expected {expected_size})")
                 continue
 
-            if data[:3] != b"z32":
+            if data[:6] != b"packet":
                 print("error: missing or incorrect prefix")
                 continue
-
+            if int(data[6:9]) <= last_packet:
+                print("incorrect packet number")
+                continue
+            print("packet verified")
+            last_packet = int(data[6:9])
             print(f"received {size_rec} bytes from {ret_addr}")
-
-            s.sendto(str.encode(f"{size_rec}"), ret_addr)
+            s.sendto(str.encode(f"ACK{last_packet}"), ret_addr)
 
     except Exception as e:
         print(f"an error occurred: {e}")

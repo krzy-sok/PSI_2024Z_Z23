@@ -4,33 +4,37 @@ import argparse
 
 
 def end(s):
-    print("end of work")
     s.close()
+    print("end of work")
+    exit(0)
 
 
-def send_data(s, msg):
-    try:
-        s.sendto(msg.encode(), (HOST, PORT))
-        print(f"sent message of length = {len(msg)}")
-    except OSError as e:
-        return -2, len(msg)
 
+def send_data(s, msg, n):
+    s.sendto(msg.encode(), (HOST, PORT))
+    print(f"sent message of length = {len(msg)}")
     response = ""
+    print("waiting")
     while not response:
         try:
             response, server_addr = s.recvfrom(1024)
             print(f"server response: {response!r}")
+            # revive in format ACK{packet num}
             try:
-                response = int(response)
+                packet_num = int(response[3:6])
+                if packet_num != n:
+                    print(f"received {packet_num} does not equal sent {n}")
+                    return -1
             except ValueError:
-                response = len(msg)
-            if int(response) != len(msg):
-                print("verification error")
+                print("incorrect response format : packet number")
                 end(s)
-            return 0, int(response)
+            if(response[:3] != b"ACK"):
+                print("incorrect response format : ACK")
+                end(s)
         except socket.timeout:
             print("socket timeout")
-            end(s)
+            return -2
+        return 0
 
 
 def setup():
@@ -41,15 +45,28 @@ def setup():
 
     # Fixed-length message
     msg_size = 512
-    payload = "A" * (msg_size - 3)  
-    msg = "z32" + payload
+    payload = "A" * (msg_size - 10)
 
-    while True:
-        res, r = send_data(s, msg)
-        if res == -2:
-            print("failed to send message, retrying...")
+
+    # send 20 packets
+    n = 1
+    timeout= 0
+    while n <= 20:
+        if timeout > 10:
+            print("server not responding, aborting")
+            end(s)
+        msg = "packet" + str(n).zfill(3) + ' ' + payload
+        res = send_data(s, msg, n)
+        if res == -1:
+            print("failed verification, retrying...")
             continue
-    
+        if res == -2:
+            print("did not receive confirmation, retrying...")
+            timeout += 1
+            continue
+        timeout = 0
+        n+=1
+
 
 
 def main(arguments):
