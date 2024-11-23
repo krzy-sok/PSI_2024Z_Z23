@@ -1,0 +1,3 @@
+FROM python:3
+ADD server1_2.py /
+ENTRYPOINT ["python", "./server1_2.py"]

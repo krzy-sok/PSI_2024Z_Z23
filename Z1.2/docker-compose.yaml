@@ -1,0 +1,14 @@
+version: "3.0"
+services:
+  server:
+    container_name: z32_server1_2
+    build: ./pyserver1_2
+    tty: true
+    cap_add:
+    - NET_ADMIN
+  client:
+    containr_name: z32_client1_2
+    build: ./pyclient1_2
+    tty: true
+    cap_add:
+    - NET_ADMIN
