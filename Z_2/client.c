@@ -7,21 +7,16 @@
 
 #define PORT 8080
 
-void log_time_diff(struct timespec start, struct timespec end) {
-    double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-    printf("Czas wysyłania pakietu: %.6f sekund\n", elapsed);
-}
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("Usage: %s <buffer_size>\n", argv[0]);
-        return EXIT_FAILURE;
+        return -1;
     }
 
     int buffer_size = atoi(argv[1]);
     if (buffer_size <= 0) {
-        printf("Error: buffer size must be a positive integer.\n");
-        return EXIT_FAILURE;
+        return -1;
     }
 
     int sock = 0;
@@ -29,9 +24,9 @@ int main(int argc, char *argv[]) {
     char *buffer = malloc(buffer_size);
     memset(buffer, 'A', buffer_size); 
 
-    // Tworzenie gniazda
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("Socket creation error");
+    
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == 0) {
         return -1;
     }
 
@@ -40,30 +35,26 @@ int main(int argc, char *argv[]) {
 
  
     if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
-        perror("Invalid address/ Address not supported");
         return -1;
     }
 
-    // Połączenie z serwerem
+   
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        perror("Connection Failed");
         return -1;
     }
 
     printf("Połączono z serwerem.\n");
-
-    // Wysyłanie danych w pętli
+    clock_t t;
+   
     for (int i = 0; i < 20; i++) {
-        struct timespec start, end;
-        clock_gettime(CLOCK_MONOTONIC, &start);
-
+        t = clock();
         if (send(sock, buffer, buffer_size, 0) == -1) {
-            perror("Send error");
+            printf("Bład wysłania danych");
             break;
         }
-
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        log_time_diff(start, end);
+        t = clock() - t; 
+        double time_taken = ((double)t)/CLOCKS_PER_SEC; 
+        printf("Wysłano dane w %f\n", time_taken);
     }
 
     free(buffer);

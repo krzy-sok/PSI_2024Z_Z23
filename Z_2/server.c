@@ -10,39 +10,36 @@ int main() {
     int server_fd, new_socket;
     struct sockaddr_in address;
     int addrlen = sizeof(address);
-    char buffer[1024];  // Wystarczająco duży bufor do odbioru danych
+    char buffer[1024];  
+
 
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd == 0) {
-        perror("Socket creation failed");
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;  // Używamy INADDR_ANY do nasłuchiwania na lokalnym hoście
+    address.sin_addr.s_addr = INADDR_ANY;  
     address.sin_port = htons(PORT);
 
-    // Bindowanie
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
-        perror("Bind failed");
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
-    // Nasłuchiwanie
+   
     if (listen(server_fd, 3) < 0) {
-        perror("Listen failed");
-        exit(EXIT_FAILURE);
+        return -1;
     }
+    
     printf("Serwer oczekuje na połączenie...\n");
 
-    // Akceptowanie połączenia
+   
     if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0) {
-        perror("Accept failed");
-        exit(EXIT_FAILURE);
+        return -1;
     }
     printf("Połączenie nawiązane.\n");
 
-    // Odbiór danych z opóźnieniem
+    
     while (1) {
         int bytes_read = read(new_socket, buffer, sizeof(buffer));
         if (bytes_read <= 0) {
@@ -50,7 +47,7 @@ int main() {
             break;
         }
         printf("Odebrano %d bajtów.\n", bytes_read);
-        sleep(1);  // Sztuczne opóźnienie
+        sleep(1);  
     }
 
     close(new_socket);
