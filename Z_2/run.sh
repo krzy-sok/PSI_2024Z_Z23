@@ -9,4 +9,3 @@ docker run --rm -it --network-alias z32_client --ip '172.21.32.2' --network z32_
 
 
 docker kill z32_server
-docker rm z32_server
