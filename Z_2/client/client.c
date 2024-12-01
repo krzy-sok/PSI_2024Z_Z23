@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
     int sock = 0;
     struct sockaddr_in serv_addr;
     char *buffer = (char *)malloc(buffer_size);
-    memset(buffer, 'A', buffer_size); 
+    memset(buffer, 'A', buffer_size);
 
-    
+
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock == 0) {
         return -1;
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
 
- 
+
     if (inet_pton(AF_INET, "172.21.32.3", &serv_addr.sin_addr) <= 0) {
         return -1;
     }
@@ -43,16 +43,17 @@ int main(int argc, char *argv[]) {
     }
 
     printf("Połączono z serwerem.\n");
-    clock_t t;
-   
+    time_t start, end;
+
     for (int i = 0; i < 20; i++) {
-        t = clock();
+        time(&start);
         if (send(sock, buffer, buffer_size, 0) == -1) {
             printf("Bład wysłania danych");
             break;
         }
-        t = clock() - t; 
-        double time_taken = ((double)t)/CLOCKS_PER_SEC; 
+        time(&end);
+        // alredy in seconds
+        double time_taken = difftime(end,start);
         printf("Wysłano dane w %f\n", time_taken);
     }
 
