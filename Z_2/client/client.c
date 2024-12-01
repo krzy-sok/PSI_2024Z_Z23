@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
         time(&end);
         // alredy in seconds
         double time_taken = difftime(end,start);
-        printf("Wysłano dane w %f\n", time_taken);
+        printf("Wysłano dane w %f s\n", time_taken);
     }
 
     free(buffer);
