@@ -7,4 +7,6 @@ docker run --rm -d -it --network-alias z32_server --ip '172.21.32.3' --network z
 docker logs -f z32_server > result_server.txt 2>&1 &
 docker run --rm -it --network-alias z32_client --ip '172.21.32.2' --network z32_network --name z32_client z32_client_image 100 > result_client.txt
 
+
+docker kill z32_server
 docker rm z32_server
